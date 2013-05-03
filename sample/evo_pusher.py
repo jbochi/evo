@@ -2,8 +2,6 @@
 Sample Evo API client that pushes streams to another server
 """
 
-RTMP_ENDPOINT = "rtmp://10.2.10.51/live"
-
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
@@ -11,8 +9,13 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from flask import Flask, request
 import json
 import requests
-from evo import Evo
 
+
+RTMP_ENDPOINT = "rtmp://10.2.10.51/live"
+if len(sys.argv) == 2:
+    RTMP_ENDPOINT = sys.argv[1]
+
+from evo import Evo
 
 app = Flask(__name__)
 
@@ -31,4 +34,5 @@ def on_event():
     return "OK"
 
 if __name__ == "__main__":
+    print 'Pushing all streams to %s' % RTMP_ENDPOINT
     app.run(host='0.0.0.0', debug=True)

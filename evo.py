@@ -4,8 +4,9 @@ import requests
 from functools import partial
 
 class Evo(object):
-    def __init__(self, host, port=7777):
+    def __init__(self, host, uri="", port=7777):
         self.host = host
+        self.uri = uri
         self.port = port
 
     def __getattr__(self, attr):
@@ -13,8 +14,9 @@ class Evo(object):
 
     def rpc(self, method, **kwargs):
         args = ' '.join("{key}={value}".format(key=key, value=value) for key, value in kwargs.items())
-        url = "http://{host}:{port}/{method}?params={params}".format(
+        url = "http://{host}:{port}{uri}/{method}?params={params}".format(
             host=self.host,
+            uri=self.uri,
             port=self.port,
             method=method,
             params=base64.b64encode(args)

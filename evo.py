@@ -9,7 +9,7 @@ class Evo(object):
         self.port = port
 
     def __getattr__(self, attr):
-        return partial(self.rpc, host=self.host, port=self.port, method=attr)
+        return partial(self.rpc, method=attr)
 
     def rpc(self, method, **kwargs):
         args = ' '.join("{key}={value}".format(key=key, value=value) for key, value in kwargs.items())
